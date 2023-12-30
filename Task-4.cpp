@@ -7,8 +7,6 @@ using namespace std;
 
 #define MAX_BOOKS 5
 #define MAX_ALLOWED_BOOKS 2
-#define FINE_RATE 1
-#define SECONDS_PER_DAY 24 * 60 * 60
 #define DAYS_ALLOWED 7
 
 struct Book {
@@ -29,20 +27,20 @@ time_t convertToDate(const string& date) {
 
 int calculateFine(time_t issueDate, time_t returnDate) {
 
-    double diffSeconds = difftime(returnDate, issueDate);
-    int diffDays = static_cast<int>(diffSeconds / SECONDS_PER_DAY);
+    int diffSeconds = difftime(returnDate, issueDate);
+    int diffDays = static_cast<int>(diffSeconds/(24*60*60));
 
     if (diffDays <= DAYS_ALLOWED) {
         return 0;
     } else {
         int extraDays = diffDays - DAYS_ALLOWED;
-        return extraDays * FINE_RATE;
+        return extraDays;
     }
 }
 
 void borrowBook(Book* books, int* numIssued) {
     if (*numIssued >= MAX_ALLOWED_BOOKS) {
-        cout << "You have already borrowed the maximum number of books (" << MAX_ALLOWED_BOOKS << ")." << endl;
+        cout << "\nYou have already borrowed the maximum number of books (" << MAX_ALLOWED_BOOKS << ")." << endl;
         return;
     }
 
